@@ -7,6 +7,7 @@
 #include <QOpenGLFunctions_1_1>
 #include <QOpenGLShaderProgram>
 #include <QString>
+#include <QOpenGLBuffer>
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions_1_1
 {
@@ -17,20 +18,17 @@ public:
     GLWidget(QWidget *parent = 0);
     void paintObject(const QMatrix4x4& mvMatrix);
     void setMode(bool checked);
-
-
+    void readPoly(const QString &fname);
 
 protected:
     void initializeGL() override;
     void paintGL() override;
     void resizeGL(int w, int h) override;
 
-    void initializeCubeData();
-    
     bool linesChecked;
 
 private:
-
+    QString filename;
     bool m_initialized;
     struct ScenePoint {
         QVector3D coords;
@@ -49,6 +47,13 @@ private:
     QMatrix4x4 m_modelMatrix;
     QMatrix4x4 m_viewMatrix;
     QMatrix4x4 m_projectionMatrix;
+
+    QVector3D m_min;
+    QVector3D m_max;
+
+    QOpenGLBuffer m_vertexBuffer;
+
+    void zoomFit(int angle);
 };
 
 #endif // GLWIDGET_H

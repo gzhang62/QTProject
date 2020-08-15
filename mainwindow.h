@@ -18,6 +18,7 @@ public:
 
 private slots:
    void setLines();
+   void openFile();
 
 private:
     Ui::MainWindow *ui;
