@@ -63,7 +63,15 @@ void GLWidget::initializeGL()
      if (m_data.size() == 0)
          return;
 
+     m_projectionMatrix.setToIdentity();
+     m_aspectRatio = qreal(window()->width()) / window()->height();
+     m_projectionMatrix.perspective(m_fov, m_aspectRatio, m_nearPlane, m_farPlane);
+
+
+     m_viewMatrix.setToIdentity();
+     m_viewMatrix.lookAt(m_camPos, m_center, m_updirection);
      m_shader.bind();
+
      m_shader.setAttributeArray("Vertex", GL_FLOAT,
                                  &m_data[0].coords, 3, sizeof(ScenePoint));
      m_shader.enableAttributeArray("Vertex");
@@ -244,15 +252,17 @@ void GLWidget::zoomFit(int angle)
 
 
 
-    m_projectionMatrix.setToIdentity();
-    m_aspectRatio = qreal(window()->width()) / window()->height();
-    m_projectionMatrix.perspective(angle, m_aspectRatio, m_nearPlane, m_farPlane);
+//    m_projectionMatrix.setToIdentity();
+//    m_aspectRatio = qreal(window()->width()) / window()->height();
+//    m_projectionMatrix.perspective(angle, m_aspectRatio, m_nearPlane, m_farPlane);
 
 
-    m_viewMatrix.setToIdentity();
+//    m_viewMatrix.setToIdentity();
     m_center = (m_min + m_max) * 0.5;
     m_camPos = m_center + m_camDirection * m_distancetoCenter;
-    m_viewMatrix.lookAt(m_camPos, m_center, m_updirection);
+//    m_viewMatrix.lookAt(m_camPos, m_center, m_updirection);
+
+    update();
 }
 
 
