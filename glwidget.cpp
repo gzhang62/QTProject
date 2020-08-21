@@ -244,11 +244,11 @@ void GLWidget::zoomFit(int angle)
 {
     double half_angle_radians = angle * M_PI / 180 / 2;
     double radius = (m_max - m_min).length() / 2;
-    m_distancetoCenter = radius / sin(half_angle_radians);
+    m_distanceToCenter = radius / sin(half_angle_radians);
 
 
-    m_nearPlane = m_distancetoCenter - radius * 1.2;
-    m_farPlane = m_distancetoCenter + radius * 2;
+    m_nearPlane = m_distanceToCenter - radius * 1.2;
+    m_farPlane = m_distanceToCenter + radius * 2;
 
 
 
@@ -259,8 +259,76 @@ void GLWidget::zoomFit(int angle)
 
 //    m_viewMatrix.setToIdentity();
     m_center = (m_min + m_max) * 0.5;
-    m_camPos = m_center + m_camDirection * m_distancetoCenter;
+    m_camPos = m_center + m_camDirection * m_distanceToCenter;
 //    m_viewMatrix.lookAt(m_camPos, m_center, m_updirection);
+
+    update();
+}
+
+void GLWidget::mousePressEvent(QMouseEvent *event)
+{
+      m_mousePosition = event->pos();
+//    if(event->type() == Qt::LeftButton)
+//    {
+
+//    }
+//    else if(event->type() == Qt::RightButton)
+//    {
+
+//    }
+//    else if(event->type() == QWheelEvent::)
+//    {
+
+//    }
+}
+
+void GLWidget::mouseMoveEvent(QMouseEvent *event)
+{
+    auto currentPos = event->pos();
+    float xoffset = currentPos.x()- m_mousePosition.x();
+    float yoffset = currentPos.y() - m_mousePosition.y();
+
+    m_mousePosition = currentPos;
+
+    float sensitivity = 0.1f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    m_yaw   += xoffset;
+    m_pitch += yoffset;
+
+    if(m_pitch > 89.0f)
+        m_pitch = 89.0f;
+    if(m_pitch < -89.0f)
+        m_pitch = -89.0f;
+
+    float yaw_radians = m_yaw * M_PI / 180.0;
+    float pitch_radians = m_pitch * M_PI / 180.0;
+
+    QVector3D direction;
+    direction = QVector3D(cos(yaw_radians) * cos(pitch_radians),
+                        sin(pitch_radians),
+                        sin(yaw_radians) * cos(pitch_radians));
+
+
+    direction.normalize();
+    m_camDirection = direction;
+    m_camPos = m_center + m_camDirection * m_distanceToCenter;
+    update();
+}
+
+void GLWidget::wheelEvent(QWheelEvent *event)
+{
+    QPoint numDegrees = event->angleDelta() / 8;
+    float yoffset = numDegrees.y();
+
+    m_fov -= (float)yoffset;
+    if (m_fov < 1.0f)
+        m_fov = 1.0f;
+    if (m_fov > 45.0f)
+        m_fov = 45.0f;
+
+    zoomFit(m_fov);
 
     update();
 }

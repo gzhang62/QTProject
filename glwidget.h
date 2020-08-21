@@ -63,18 +63,17 @@ private:
     QVector3D m_camDirection;
     QPoint m_mousePosition;
     QVector3D m_updirection;
-    double m_distancetoCenter;
+    double m_distanceToCenter;
     int m_fov;
 
     double m_nearPlane;
     double m_farPlane;
     float m_aspectRatio;
 
-    /*
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
-*/
+
     float m_yaw;
     float m_pitch;
 };
