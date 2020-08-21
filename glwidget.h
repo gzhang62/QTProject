@@ -58,25 +58,25 @@ private:
 
     void zoomFit(int angle);
 
-    QVector3D center;
-    QVector3D camPos;
-    QVector3D camDirection;
-    QPoint m_position;
-    QVector3D updirection;
-    double distance_to_center;
+    QVector3D m_center;
+    QVector3D m_camPos;
+    QVector3D m_camDirection;
+    QPoint m_mousePosition;
+    QVector3D m_updirection;
+    double m_distancetoCenter;
     int m_fov;
 
-    double nearPlane;
-    double farPlane;
-    float aspectRatio;
+    double m_nearPlane;
+    double m_farPlane;
+    float m_aspectRatio;
 
     /*
     void mouseMoveEvent(QMouseEvent *event) override;
     void mousePressEvent(QMouseEvent *event) override;
     void wheelEvent(QWheelEvent *event) override;
 */
-    float yaw;
-    float pitch;
+    float m_yaw;
+    float m_pitch;
 };
 
 #endif // GLWIDGET_H

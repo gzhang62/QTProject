@@ -19,11 +19,11 @@ GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent), m_vertexBuffer(QOpe
         m_max[i] = -1e20;
     }
 
-    yaw = -90.0;
-    pitch = 0.0;
+    m_yaw = -90.0;
+    m_pitch = 0.0;
     m_fov = 60;
-    camDirection = QVector3D(0, 0, 1);
-    updirection = QVector3D(0, 1, 0);
+    m_camDirection = QVector3D(0, 0, 1);
+    m_updirection = QVector3D(0, 1, 0);
 
 }
 
@@ -236,23 +236,23 @@ void GLWidget::zoomFit(int angle)
 {
     double half_angle_radians = angle * M_PI / 180 / 2;
     double radius = (m_max - m_min).length() / 2;
-    distance_to_center = radius / sin(half_angle_radians);
+    m_distancetoCenter = radius / sin(half_angle_radians);
 
 
-    nearPlane = distance_to_center - radius * 1.2;
-    farPlane = distance_to_center + radius * 2;
+    m_nearPlane = m_distancetoCenter - radius * 1.2;
+    m_farPlane = m_distancetoCenter + radius * 2;
 
 
 
     m_projectionMatrix.setToIdentity();
-    aspectRatio = qreal(window()->width()) / window()->height();
-    m_projectionMatrix.perspective(angle, aspectRatio, nearPlane, farPlane);
+    m_aspectRatio = qreal(window()->width()) / window()->height();
+    m_projectionMatrix.perspective(angle, m_aspectRatio, m_nearPlane, m_farPlane);
 
 
     m_viewMatrix.setToIdentity();
-    center = (m_min + m_max) * 0.5;
-    camPos = center + camDirection * distance_to_center;
-    m_viewMatrix.lookAt(camPos, center, updirection);
+    m_center = (m_min + m_max) * 0.5;
+    m_camPos = m_center + m_camDirection * m_distancetoCenter;
+    m_viewMatrix.lookAt(m_camPos, m_center, m_updirection);
 }
 
 
