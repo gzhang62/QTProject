@@ -57,6 +57,26 @@ private:
     QOpenGLBuffer m_vertexBuffer;
 
     void zoomFit(int angle);
+
+    QVector3D center;
+    QVector3D camPos;
+    QVector3D camDirection;
+    QPoint m_position;
+    QVector3D updirection;
+    double distance_to_center;
+    int m_fov;
+
+    double nearPlane;
+    double farPlane;
+    float aspectRatio;
+
+    /*
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void wheelEvent(QWheelEvent *event) override;
+*/
+    float yaw;
+    float pitch;
 };
 
 #endif // GLWIDGET_H
