@@ -47,12 +47,19 @@ void MainWindow::openFile()
     QFileDialog dialog(this);
     QString fileName = QFileDialog::getOpenFileName(this,
         tr("Open File"), "",
-        tr("Images (*.ply)"));
+        tr("Images (*.ply *.off)"));
 
     if (fileName.isEmpty())
            return;
     else{
-        ui->openGLWidget->readPoly(fileName);
+        if(fileName.endsWith("ply"))
+        {
+            ui->openGLWidget->readPoly(fileName);
+        }
+        if(fileName.endsWith("off"))
+        {
+            ui->openGLWidget->readOff(fileName);
+        }
     }
 }
 

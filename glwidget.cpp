@@ -1,6 +1,7 @@
 #include "glwidget.h"
 #include "mainwindow.h"
 
+#include <QMouseEvent>
 #include <QtMath>
 
 GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent), m_vertexBuffer(QOpenGLBuffer::VertexBuffer)
@@ -159,6 +160,60 @@ void GLWidget::readPoly(const QString &fname) {
     m_vertexBuffer.bind();
     m_vertexBuffer.allocate(m_data.constData(),
                             m_data.count() * sizeof(ScenePoint));
+
+
+}
+
+void GLWidget::readOff(const QString &fname) {
+
+    OffReader reader(fname);
+//    for(int i = 0; i < 3; i++)
+//    {
+//        m_min[i] = 1e20;
+//    }
+//    for(int i = 0; i < 3; i++)
+//    {
+//        m_max[i] = -1e20;
+//    }
+
+    if(reader.read()) {
+        // reconstruct faces
+        const QVector<OffReader::ScenePoint> vertices = reader.vertices();
+        const QVector<QVector<int>> faces = reader.faces();
+        for(const QVector<int>& face: faces) {
+            ScenePoint pt;
+            for(int vertexId: face) {
+                const OffReader::ScenePoint &scenePoint = vertices.at(vertexId);
+                pt.coords = scenePoint.coord;
+                pt.normal = scenePoint.normal;
+                m_data << pt;
+
+            }
+        }
+
+        for(int i = 0; i < m_data.length(); ++i)
+        {
+            for(int j = 0; j < 3; ++j)
+            {
+                if(m_data[i].coords[j] < m_min[j])
+                {
+                    m_min[j] = m_data[i].coords[j];
+                }
+                if(m_data[i].coords[j] > m_max[j])
+                {
+                    m_max[j] = m_data[i].coords[j];
+                }
+            }
+
+        }
+
+    }   
+    m_vertexBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    m_vertexBuffer.create();
+    m_vertexBuffer.bind();
+    m_vertexBuffer.allocate(m_data.constData(),
+                            m_data.count() * sizeof(ScenePoint));
+
 
 
 

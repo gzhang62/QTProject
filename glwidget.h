@@ -2,12 +2,14 @@
 #define GLWIDGET_H
 
 #include "plyreader.h"
+#include "offreader.h"
 
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions_1_1>
 #include <QOpenGLShaderProgram>
 #include <QString>
 #include <QOpenGLBuffer>
+#include <QEvent>
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions_1_1
 {
@@ -19,6 +21,7 @@ public:
     void paintObject(const QMatrix4x4& mvMatrix);
     void setMode(bool checked);
     void readPoly(const QString &fname);
+    void readOff(const QString &fname);
 
 protected:
     void initializeGL() override;

@@ -19,11 +19,13 @@ SOURCES += \
     glwidget.cpp \
     main.cpp \
     mainwindow.cpp \
+    offreader.cpp \
     plyreader.cpp
 
 HEADERS += \
     glwidget.h \
     mainwindow.h \
+    offreader.h \
     plyreader.h
 
 FORMS += \
