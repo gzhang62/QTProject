@@ -320,13 +320,13 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event)
 void GLWidget::wheelEvent(QWheelEvent *event)
 {
     QPoint numDegrees = event->angleDelta() / 8;
-    float yoffset = numDegrees.y();
+    float yoffset = numDegrees.y() * 0.25;
 
     m_fov -= (float)yoffset;
     if (m_fov < 1.0f)
         m_fov = 1.0f;
-    if (m_fov > 45.0f)
-        m_fov = 45.0f;
+    if (m_fov > 180.0f)
+        m_fov = 180.0f;
 
     zoomFit(m_fov);
 
