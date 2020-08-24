@@ -65,7 +65,7 @@ void GLWidget::initializeGL()
 
      m_projectionMatrix.setToIdentity();
      m_aspectRatio = qreal(window()->width()) / window()->height();
-     m_projectionMatrix.perspective(m_fov, m_aspectRatio, m_nearPlane, m_farPlane);
+     m_projectionMatrix.perspective(90.0, m_aspectRatio, m_nearPlane, m_farPlane);
 
 
      m_viewMatrix.setToIdentity();
@@ -92,7 +92,6 @@ void GLWidget::initializeGL()
 //    QVector3D up(0, 1, 0);
 //    m_viewMatrix.lookAt(eye, center, up);
 
-    zoomFit(60);
 
 
 
@@ -176,7 +175,7 @@ void GLWidget::readPoly(const QString &fname) {
     m_vertexBuffer.allocate(m_data.constData(),
                             m_data.count() * sizeof(ScenePoint));
 
-
+    zoomFit(60);
 }
 
 void GLWidget::readOff(const QString &fname) {
@@ -230,6 +229,7 @@ void GLWidget::readOff(const QString &fname) {
                             m_data.count() * sizeof(ScenePoint));
 
 
+    zoomFit(60);
 
 
 }
@@ -322,15 +322,13 @@ void GLWidget::wheelEvent(QWheelEvent *event)
     QPoint numDegrees = event->angleDelta() / 8;
     float yoffset = numDegrees.y() * 0.25;
 
-    m_fov -= (float)yoffset;
+    m_fov += (float)yoffset;
     if (m_fov < 1.0f)
         m_fov = 1.0f;
     if (m_fov > 180.0f)
         m_fov = 180.0f;
 
     zoomFit(m_fov);
-
-    update();
 }
 
 
